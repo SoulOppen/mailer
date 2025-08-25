@@ -13,7 +13,7 @@ The script is ideal for sending mass personalized communications, such as monthl
 ## Prerequisites
 
 - **Python 3.x**
-- **A Gmail account** with **Two-Factor Authentication** enabled and an **App Password** created for the script.
+- **A Mail account** and an **App Password** created for the script.
 - **An Excel file (`.xlsx`)** named `recipients.xlsx` with the following columns: `nombre`, `email`, and `asunto`.
 
 ## Installation
