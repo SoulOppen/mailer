@@ -1,18 +1,22 @@
 def readTxt(path):
     """
-    Reads a text file, skips the first line, and returns the remaining 
+    Reads a text file, skips the first line, and returns the remaining
     lines as a set of unique, non-empty strings.
+    If the file does not exist, returns an empty set.
 
     Parameters:
     - path (str): The path to the text file.
 
     Returns:
-    - set: A set containing unique lines from the file, excluding the first line.
+    - set: A set containing unique lines from the file, excluding the first line,
+           or an empty set if the file is not found.
     """
-    with open(path, "r", encoding="utf-8") as f:
-        next(f)  # skip the first line
-        return set(line.strip() for line in f if line.strip())
-
+    try:
+        with open(path, "r", encoding="utf-8") as f:
+            next(f, None)  # skip first line safely
+            return set(line.strip() for line in f if line.strip())
+    except FileNotFoundError:
+        return set()
 
 def writeTxt(path, lines, head):
     """
