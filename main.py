@@ -2,6 +2,7 @@ import smtplib
 import os
 from dotenv import load_dotenv
 from email.mime.text import MIMEText
+from condition import valid_domain,valid_mail
 from read_and_write import readTxt,writeTxt
 import pandas as pd
 def main():
@@ -25,7 +26,13 @@ def main():
         server.starttls()
         server.login(user, password)
         
-        for t in to: 
+        for t in to:
+            if(!valid_mail(t)){
+               invalid_mail.add(t)
+            }
+            if(!valid_domain(t)){
+               invalid_domains.add(t.split("@")[1])
+            }
             msg = MIMEText(body,"html")
             msg['From'] = user
             msg['Subject'] = subject           
