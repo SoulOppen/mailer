@@ -3,29 +3,35 @@ import os
 from dotenv import load_dotenv
 from email.mime.text import MIMEText
 from read_and_write import readTxt,writeTxt
+import pandas as pd
 def main():
     load_dotenv(dotenv_path="/mnt/c/Users/ariel/Documentos/quickMail/.env")
     invalid_mail=readTxt("./invalid_mail.txt")
     invalid_domains=readTxt("./invalid_domain.txt")
     smtp_server = os.getenv("SMTP_SERVER")
-    print(smtp_server)
     smtp_port = int(os.getenv("SMTP_PORT"))
     user = os.getenv("SMTP_USER")
     password = os.getenv("SMTP_PASSWORD")
-    print("user",user)
-    to = "arieloppenheimer@outlook.cl"
-    subject = "hola9"
-    body = "Hola!\nEste es un correo de prueba enviado solo con smtplib."
-    msg = MIMEText(body)
-    msg['From'] = user
-    msg['To'] = to
-    msg['Subject'] = subject
+    df= pd.read_excel("/mnt/c/Users/ariel/Documentos/T_Jose/Mailing/Prototipo.xlsm", sheet_name=None)
+    to = df["mail"]["mail"].dropna().tolist()
+    subject = df["adjuntos"].at[0, "subject"]
+    body=""
+    for col in ["Intro", "Noticia", "Bajada"]:
+        for texto in df["Texto"][col].dropna().tolist():
+            body += f"<p>{texto}</p>\n"
+   
     try:
         server = smtplib.SMTP(smtp_server, smtp_port)
         server.starttls()
         server.login(user, password)
-        server.sendmail(user,to,  msg.as_string())
-        print("✅ Correo enviado correctamente")
+        
+        for t in to: 
+            msg = MIMEText(body,"html")
+            msg['From'] = user
+            msg['Subject'] = subject           
+            msg['To'] = t
+            server.sendmail(user,t,  msg.as_string())
+            print("✅ Correo enviado correctamente")
     except Exception as e:
         print("❌ Error:", e)
     finally:
