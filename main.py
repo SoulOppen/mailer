@@ -27,12 +27,13 @@ def main():
         server.login(user, password)
         
         for t in to:
-            if(!valid_mail(t)){
+            if(not valid_mail(t) or t in invalid_mail):
                invalid_mail.add(t)
-            }
-            if(!valid_domain(t)){
-               invalid_domains.add(t.split("@")[1])
-            }
+               continue
+            domain=t.split("@")[1]
+            if(not valid_domain(t) or domain in invalid_domains):
+               invalid_domains.add(domain)
+               continue
             msg = MIMEText(body,"html")
             msg['From'] = user
             msg['Subject'] = subject           
@@ -46,6 +47,6 @@ def main():
     if len(invalid_domains)>0:
         writeTxt("./invalid_domain.txt",invalid_domains,"Invalid Domains Found")
     if len(invalid_mail)>0:
-        writeTxt("./invalid_mail.txt",invalid_domains,"Invalid Domains Found")
+        writeTxt("./invalid_mail.txt",invalid_mail,"Invalid Mail Found")
 if __name__=='__main__':
     main()

@@ -1,5 +1,5 @@
 import re
-import os
+import socket
 def valid_mail(mail):
     """
     Validates the format of an email address using regex.
@@ -39,14 +39,10 @@ def valid_domain(mail):
     try:
         domain = mail.split("@")[1]
     except IndexError:
-        return False  # invalid email, no '@'
+        return False  
 
-    # Send only 1 ping packet depending on the OS
-    param = "-n 1" if os.name == "nt" else "-c 1"
-    # Suppress output in the console
-    ans = os.system(
-        f"ping {param} {domain} >nul 2>&1"
-        if os.name == "nt"
-        else f"ping {param} {domain} >/dev/null 2>&1"
-    )
-    return ans == 0
+    try:
+        socket.gethostbyname(domain)
+        return True
+    except socket.gaierror:
+        return False
