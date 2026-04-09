@@ -1,15 +1,11 @@
-def readTxt(path):
-    """
-    Reads a text file, skips the first line, and returns the remaining
-    lines as a set of unique, non-empty strings.
-    If the file does not exist, returns an empty set.
+def readTxt(path: str) -> set[str]:
+    """Lee un TXT y devuelve sus lineas (sin encabezado) como conjunto.
 
-    Parameters:
-    - path (str): The path to the text file.
+    Args:
+        path: Ruta del archivo a leer.
 
     Returns:
-    - set: A set containing unique lines from the file, excluding the first line,
-           or an empty set if the file is not found.
+        Conjunto de lineas unicas no vacias. Si no existe, retorna set().
     """
     try:
         with open(path, "r", encoding="utf-8") as f:
@@ -18,19 +14,16 @@ def readTxt(path):
     except FileNotFoundError:
         return set()
 
-def writeTxt(path, lines, head):
-    """
-    Writes lines to a text file, adding a header as the first line.
 
-    Parameters:
-    - path (str): The path to the text file to write.
-    - lines (iterable of str): Lines to write into the file.
-    - head (str): Header line to write at the top of the file.
+def writeTxt(path: str, lines: set[str], head: str) -> None:
+    """Escribe un TXT con encabezado y una linea por elemento.
 
-    Returns:
-    - None
+    Args:
+        path: Ruta del archivo de salida.
+        lines: Coleccion de lineas a persistir.
+        head: Encabezado a escribir en la primera linea.
     """
     with open(path, "w", encoding="utf-8") as f:
-        f.write(f'{head}\n')
+        f.write(f"{head}\n")
         for line in lines:
             f.write(line + "\n")

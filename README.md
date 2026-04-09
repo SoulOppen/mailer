@@ -1,46 +1,90 @@
-# Automated Email Sender
+# quickMail
 
-This is a Python script that automates the process of sending personalized emails by reading recipient data from an Excel file (`.xlsx`).
+[![CI](https://github.com/OWNER/REPO/actions/workflows/ci.yml/badge.svg)](https://github.com/OWNER/REPO/actions/workflows/ci.yml)
+![Python](https://img.shields.io/badge/python-3.11+-blue.svg)
+![Pytest](https://img.shields.io/badge/tests-pytest-0A9EDC.svg)
 
-The script is ideal for sending mass personalized communications, such as monthly reports, event invitations, or notifications, without manual work.
+Automatiza envios de correo personalizados a partir de un archivo Excel, aplicando validaciones de email y dominio antes del envio SMTP.
 
-## Features
+> Nota: reemplaza `OWNER/REPO` en el badge de CI con tu repositorio real en GitHub.
 
-- **Reads data from Excel:** Uses the `openpyxl` library to read recipient information (names, email addresses, and subjects).
-- **Personalized messages:** Automatically generates a custom email body for each recipient based on the data in the Excel file.
-- **Email automation:** Connects to an SMTP server (like Gmail) to send emails securely.
+## Flujo del sistema
 
-## Prerequisites
+![Flujo quickMail](docs/assets/mail-flow.svg)
 
-- **Python 3.x**
-- **A Mail account** and an **App Password** created for the script.
-- **An Excel file (`.xlsx`)** named `recipients.xlsx` with the following columns: `nombre`, `email`, and `asunto`.
+## Caracteristicas
 
-## Installation
+- Lee destinatarios y contenido desde un workbook de Excel.
+- Construye un cuerpo HTML usando bloques de texto configurables.
+- Valida formato de correo y resolucion DNS de dominio.
+- Guarda correos/dominios invalidos en archivos TXT para auditoria.
+- Ejecuta pruebas automaticamente con GitHub Actions.
 
-1.  Clone this repository or download the script files.
-2.  Install the required Python library:
+## Estructura
 
-    ```bash
-    pip install openpyxl
-    ```
+- `main.py`: orquestacion del flujo completo.
+- `condition.py`: validadores de email y dominio.
+- `read_and_write.py`: utilidades de lectura/escritura TXT.
+- `constants.py`: constantes centralizadas del proyecto.
+- `tests/`: pruebas para todas las funciones.
+- `.github/workflows/ci.yml`: pipeline CI.
+- `AGENT.md`: reglas de calidad y orquestacion de skills/subagentes.
+- `skills/`: base para skills reutilizables.
 
-## How to use
+## Requisitos
 
-1.  **Prepare your Excel file:** Make sure your `recipients.xlsx` file is in the same directory as the script, and that its columns are correctly named.
+- Python 3.11 o superior.
+- Cuenta SMTP con credenciales validas.
+- Archivo Excel con estas hojas/columnas:
+  - Hoja `mail`, columna `mail`.
+  - Hoja `adjuntos`, columna `subject`.
+  - Hoja `Texto`, columnas `Intro`, `Noticia`, `Bajada`.
 
-2.  **Configure the script:** Open the `send_reports.py` file and update the following variables with your details:
+## Instalacion
 
-    ```python
-    # Your Gmail account and App Password
-    sender_email = "your_email@gmail.com"
-    app_password = "your_app_password" # Use the App Password, not your regular password
-    ```
+```bash
+python -m venv .venv
+. .venv/Scripts/activate
+pip install -r requirements.txt -r requirements-dev.txt
+```
 
-3.  **Run the script:** Execute the script from your terminal.
+## Configuracion
 
-    ```bash
-    python send_reports.py
-    ```
+1. Copia `.env.example` a `.env`.
+2. Completa las variables:
 
-The script will read the data, create the personalized messages, and send an email to each recipient listed in the Excel file.
+```env
+SMTP_SERVER=smtp.tu-proveedor.com
+SMTP_PORT=587
+SMTP_USER=tu_mail@dominio.com
+SMTP_PASSWORD=tu_app_password
+```
+
+3. Ajusta la ruta del Excel si corresponde:
+   - por defecto se usa `data/Prototipo.xlsm` (ver `constants.py`).
+
+## Ejecucion
+
+```bash
+python main.py
+```
+
+## Testing local
+
+```bash
+pytest --cov=. --cov-report=term-missing --cov-fail-under=80
+```
+
+## CI en GitHub
+
+El workflow `CI` corre en cada `push` y `pull_request` a `main/master`:
+
+- instala dependencias,
+- ejecuta tests con cobertura,
+- falla si la cobertura baja de 80%.
+
+## Buenas practicas del proyecto
+
+- Tests obligatorios para todas las funciones.
+- Constantes en `constants.py`.
+- Funciones explicitas y documentadas con docstrings.
