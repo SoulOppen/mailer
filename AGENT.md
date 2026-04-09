@@ -4,6 +4,8 @@
 Este archivo define como los agentes deben trabajar en `quickMail` para mantener calidad, trazabilidad y velocidad de entrega.
 
 ## Reglas obligatorias
+0. Gestion de TODOs:
+   - Siempre definir mas de un TODO en cada tarea (minimo 2) para asegurar trazabilidad y control de avance.
 1. Tests para todas las funciones:
    - Toda funcion nueva debe incluir tests.
    - Las funciones existentes deben permanecer cubiertas por tests.
@@ -17,6 +19,10 @@ Este archivo define como los agentes deben trabajar en `quickMail` para mantener
 ## Orquestacion de skills y subagentes
 Los agentes pueden crear subagentes y combinarlos con skills para dividir trabajo en paralelo:
 
+- Regla de activacion:
+  - Llamar skills y subagentes segun sea necesario por tipo de tarea, complejidad y riesgo.
+  - No ejecutar todo en un unico flujo si se puede separar en analisis, implementacion y validacion.
+
 - Analisis y mapeo:
   - Subagente de exploracion para localizar archivos, riesgos y dependencias.
   - Skills de dominio para interpretar stack y convenciones.
@@ -26,6 +32,14 @@ Los agentes pueden crear subagentes y combinarlos con skills para dividir trabaj
 - Validacion:
   - Subagente para ejecutar checks locales (tests/lint).
   - Subagente para revisar consistencia de README/AGENT/skills.
+
+## Subagentes obligatorios de control
+- Subagente de revision de codigo:
+  - Objetivo: detectar bugs, regresiones, deuda tecnica y riesgos de seguridad.
+  - Salida: reporte tecnico separado con hallazgos priorizados (alto/medio/bajo) y acciones sugeridas.
+- Subagente de documentacion:
+  - Objetivo: actualizar y verificar README/AGENT/skills sin mezclarlo con la revision tecnica.
+  - Salida: reporte documental separado con cambios requeridos, inconsistencias y pendientes.
 
 ## Flujo recomendado
 1. Analizar alcance y restricciones.

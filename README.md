@@ -1,12 +1,10 @@
 # quickMail
 
-[![CI](https://github.com/OWNER/REPO/actions/workflows/ci.yml/badge.svg)](https://github.com/OWNER/REPO/actions/workflows/ci.yml)
+[![CI](https://github.com/SoulOppen/mailer/actions/workflows/ci.yml/badge.svg)](https://github.com/SoulOppen/mailer/actions/workflows/ci.yml)
 ![Python](https://img.shields.io/badge/python-3.11+-blue.svg)
 ![Pytest](https://img.shields.io/badge/tests-pytest-0A9EDC.svg)
 
 Automatiza envios de correo personalizados a partir de un archivo Excel, aplicando validaciones de email y dominio antes del envio SMTP.
-
-> Nota: reemplaza `OWNER/REPO` en el badge de CI con tu repositorio real en GitHub.
 
 ## Flujo del sistema
 
@@ -44,7 +42,10 @@ Automatiza envios de correo personalizados a partir de un archivo Excel, aplican
 
 ```bash
 python -m venv .venv
-. .venv/Scripts/activate
+# Linux/macOS
+source .venv/bin/activate
+# Windows PowerShell
+.\\.venv\\Scripts\\Activate.ps1
 pip install -r requirements.txt -r requirements-dev.txt
 ```
 
@@ -85,6 +86,7 @@ El workflow `CI` corre en cada `push` y `pull_request` a `main/master`:
 
 ## Buenas practicas del proyecto
 
+- Gestion de tareas con mas de un TODO por ticket (minimo 2).
 - Tests obligatorios para todas las funciones.
 - Constantes en `constants.py`.
 - Funciones explicitas y documentadas con docstrings.

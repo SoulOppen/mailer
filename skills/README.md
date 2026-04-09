@@ -20,5 +20,10 @@ Se recomienda combinar skills segun el tipo de tarea:
 2. Skill de implementacion + subagente de cambios de codigo.
 3. Skill de validacion + subagente de testing/CI.
 
+## Skills disponibles
+- `skills/git-workflow/SKILL.md`: buenas practicas de flujo local con Git.
+- `skills/github-pr-ci/SKILL.md`: buenas practicas de PR, revision y CI en GitHub.
+- `skills/python-testing-quality/SKILL.md`: estandares de calidad Python y testing.
+
 ## Plantilla
 Usa `skills/_template/SKILL.md` como base para nuevos skills.

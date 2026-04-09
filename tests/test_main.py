@@ -70,7 +70,11 @@ def test_build_email_body_concatenates_columns() -> None:
 
 def test_send_emails_sends_only_valid_recipients(monkeypatch) -> None:
     smtp = DummySMTP("smtp.test.local", 587)
-    monkeypatch.setattr(main, "valid_mail", lambda email: email == "ok@example.com")
+    monkeypatch.setattr(
+        main,
+        "valid_mail",
+        lambda email: email in {"ok@example.com", "no-dns@bad.tld"},
+    )
     monkeypatch.setattr(main, "valid_domain", lambda email: email == "ok@example.com")
 
     sent_count, invalid_mail, invalid_domains = main.send_emails(
