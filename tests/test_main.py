@@ -159,6 +159,9 @@ def test_main_handles_smtp_exception_and_returns_zero(monkeypatch, tmp_path: Pat
         def starttls(self) -> None:
             raise RuntimeError("smtp failed")
 
+        def quit(self) -> None:
+            return None
+
     monkeypatch.setattr(main, "load_dotenv", lambda dotenv_path: None)
     monkeypatch.setattr(main, "readTxt", lambda path: set())
     monkeypatch.setattr(main, "persist_invalid_entries", lambda invalid_mail, invalid_domains: None)
